@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>供给治理PRD文档生成工作台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blue-50: #eff6ff;
+            --blue-100: #dbeafe;
+            --blue-200: #bfdbfe;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --blue-700: #1d4ed8;
+            --green-50: #f0fdf4;
+            --green-100: #dcfce7;
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --red-500: #ef4444;
+            --red-50: #fef2f2;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        .top-bar {
+            background: #ffffff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0 32px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-bar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--blue-500) 0%, var(--blue-700) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .logo-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .top-bar-btn {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            border: 1px solid var(--gray-200);
+            background: white;
+            color: var(--gray-600);
+            transition: all 0.2s;
+        }
+
+        .top-bar-btn:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 32px;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: var(--gray-500);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .page-header a {
+            color: var(--blue-500);
+            text-decoration: none;
+        }
+
+        .page-header a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* Left Panel - Form */
+        .form-panel {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+        }
+
+        .form-panel-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-panel-header svg {
+            color: var(--blue-500);
+        }
+
+        .form-panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .form-panel-body {
+            padding: 24px;
+        }
+
+        /* Step Progress */
+        .step-progress-bar {
+            background: var(--blue-50);
+            border: 1px solid var(--blue-100);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .step-hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--blue-700);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--blue-100);
+        }
+
+        .step-cards {
+            display: flex;
+            gap: 12px;
+        }
+
+        .step-card {
+            flex: 1;
+            padding: 14px;
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1.5px solid var(--gray-200);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .step-card:hover:not(.disabled) {
+            border-color: var(--blue-200);
+            transform: translateY(-1px);
+        }
+
+        .step-card.active {
+            border-color: var(--blue-500);
+            background: var(--blue-50);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.12);
+        }
+
+        .step-card.completed {
+            border-color: var(--green-500);
+            background: var(--green-50);
+        }
+
+        .step-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .step-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .step-card-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--gray-200);
+            color: var(--gray-400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+            transition: all 0.25s;
+        }
+
+        .step-card.active .step-card-num {
+            background: var(--blue-500);
+            color: white;
+        }
+
+        .step-card.completed .step-card-num {
+            background: var(--green-500);
+            color: white;
+        }
+
+        .step-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .step-card-fields {
+            font-size: 12px;
+            color: var(--gray-400);
+            margin-bottom: 10px;
+        }
+
+        .step-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .step-card-percent {
+            font-size: 12px;
+            color: var(--gray-400);
+        }
+
+        .step-card.active .step-card-percent {
+            color: var(--blue-600);
+        }
+
+        .step-card-badge {
+            padding: 2px 10px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .step-card.active .step-card-badge {
+            background: var(--blue-100);
+            color: var(--blue-600);
+        }
+
+        .step-card.completed .step-card-badge {
+            background: var(--green-100);
+            color: var(--green-600);
+        }
+
+        .step-card.disabled .step-card-badge {
+            background: var(--gray-100);
+            color: var(--gray-400);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+        }
+
+        .form-label .required {
+            color: var(--red-500);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 10px 14px;
+            background: #ffffff;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--gray-800);
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--gray-400);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input.error,
+        .form-textarea.error {
+            border-color: var(--red-500);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08);
+        }
+
+        .form-input.valid,
+        .form-textarea.valid {
+            border-color: var(--green-500);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: var(--gray-400);
+            margin-top: 6px;
+        }
+
+        .error-message {
+            font-size: 12px;
+            color: var(--red-500);
+            margin-top: 6px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .error-message.show {
+            display: flex;
+        }
+
+        .success-message {
+            font-size: 12px;
+            color: var(--green-500);
+            margin-top: 6px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .success-message.show {
+            display: flex;
+        }
+
+        .char-counter {
+            position: absolute;
+            bottom: 8px;
+            right: 10px;
+            font-size: 11px;
+            color: var(--gray-400);
+            background: white;
+            padding: 1px 6px;
+            border-radius: 3px;
+            pointer-events: none;
+        }
+
+        /* Format Options */
+        .format-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .format-option {
+            padding: 12px;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #ffffff;
+        }
+
+        .format-option:hover {
+            border-color: var(--blue-500);
+        }
+
+        .format-option.selected {
+            border-color: var(--blue-500);
+            background: var(--blue-50);
+        }
+
+        .format-option .format-icon {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .format-option .format-name {
+            font-weight: 500;
+            font-size: 13px;
+            color: var(--gray-700);
+        }
+
+        .format-option .format-ext {
+            font-size: 11px;
+            color: var(--gray-400);
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-200);
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--blue-500);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-600);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--gray-400);
+            color: var(--gray-700);
+        }
+
+        .btn-success {
+            background: var(--green-500);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: var(--green-600);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Right Panel - Preview */
+        .preview-panel {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+            position: sticky;
+            top: 80px;
+        }
+
+        .preview-panel-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            text-align: center;
+        }
+
+        .preview-panel-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .preview-panel-title .preview-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--blue-500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .preview-tabs {
+            display: flex;
+            border-bottom: 1.5px solid var(--gray-200);
+            margin: 0 -24px;
+            padding: 0 24px;
+        }
+
+        .preview-tab {
+            flex: 1;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-400);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1.5px;
+        }
+
+        .preview-tab:hover {
+            color: var(--gray-600);
+        }
+
+        .preview-tab.active {
+            color: var(--blue-500);
+            border-bottom-color: var(--blue-500);
+        }
+
+        .preview-panel-body {
+            padding: 24px;
+            min-height: 380px;
+        }
+
+        .preview-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            text-align: center;
+        }
+
+        .preview-empty-icon {
+            width: 64px;
+            height: 80px;
+            background: var(--gray-300);
+            border-radius: 8px 8px 8px 0;
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding-top: 8px;
+        }
+
+        .preview-empty-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--gray-50);
+            border-radius: 0 0 0 6px;
+            border-left: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .preview-empty-icon .line {
+            width: 32px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        .preview-empty-icon .line:nth-child(2) {
+            width: 24px;
+        }
+
+        .preview-empty-icon .line:nth-child(3) {
+            width: 18px;
+        }
+
+        .preview-empty-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--gray-400);
+            margin-bottom: 6px;
+        }
+
+        .preview-empty-desc {
+            font-size: 13px;
+            color: var(--gray-400);
+        }
+
+        .preview-generated {
+            display: none;
+        }
+
+        .preview-generated.show {
+            display: block;
+        }
+
+        .preview-generated-content {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 12px;
+            line-height: 1.8;
+            color: var(--gray-700);
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        .preview-generated-content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .preview-generated-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .preview-generated-content::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 3px;
+        }
+
+        /* File List */
+        .download-area {
+            text-align: center;
+            padding: 32px 20px;
+            background: var(--green-50);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .download-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .download-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--green-600);
+            margin-bottom: 4px;
+        }
+
+        .download-text {
+            color: var(--gray-500);
+            font-size: 13px;
+        }
+
+        .file-list {
+            margin-top: 16px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 14px;
+            background: var(--gray-50);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.2s;
+        }
+
+        .file-item:hover {
+            border-color: var(--blue-200);
+        }
+
+        .file-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--blue-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .file-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--gray-400);
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .file-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .file-btn-download {
+            background: var(--blue-500);
+            color: white;
+        }
+
+        .file-btn-download:hover {
+            background: var(--blue-600);
+        }
+
+        .file-btn-preview {
+            background: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-300);
+        }
+
+        .file-btn-preview:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+        }
+
+        /* Step Panel */
+        .step-panel {
+            display: none;
+        }
+
+        .step-panel.active {
+            display: block;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 72px;
+            right: 32px;
+            padding: 12px 20px;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            transform: translateX(120%);
+            transition: transform 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-color: var(--green-500);
+        }
+
+        .toast.error {
+            border-color: var(--red-500);
+        }
+
+        .toast-icon {
+            font-size: 18px;
+        }
+
+        .toast-message {
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            backdrop-filter: blur(2px);
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+            background: white;
+            padding: 32px 48px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--gray-200);
+            border-top-color: var(--blue-500);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 14px;
+        }
+
+        .loading-text {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-panel {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .step-cards {
+                flex-direction: column;
+            }
+            
+            .top-bar {
+                padding: 0 16px;
+            }
+        }
+
+        /* Smart Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-16px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.9); opacity: 0.5; }
+            50% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(0.9); opacity: 0.5; }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .step-panel.active {
+            animation: fadeInUp 0.35s ease-out;
+        }
+
+        .form-group {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        /* Auto-save indicator */
+        .autosave-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--gray-400);
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .autosave-indicator.saving {
+            color: var(--blue-500);
+        }
+
+        .autosave-indicator.saved {
+            color: var(--green-500);
+        }
+
+        .autosave-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gray-400);
+            transition: all 0.3s;
+        }
+
+        .autosave-indicator.saving .autosave-dot {
+            background: var(--blue-500);
+            animation: pulse-ring 1.5s infinite;
+        }
+
+        .autosave-indicator.saved .autosave-dot {
+            background: var(--green-500);
+        }
+
+        /* Smart progress bar on step cards */
+        .step-card-progress {
+            height: 3px;
+            background: var(--gray-100);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .step-card-progress-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .step-card.active .step-card-progress-fill {
+            background: var(--blue-500);
+        }
+
+        .step-card.completed .step-card-progress-fill {
+            background: var(--green-500);
+            width: 100% !important;
+        }
+
+        /* Smart textarea auto-grow */
+        .form-textarea.auto-grow {
+            overflow: hidden;
+            transition: height 0.2s ease;
+        }
+
+        /* Floating action button */
+        .fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--blue-500);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 50;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 24px rgba(59, 130, 246, 0.5);
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        /* Smart copy button */
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 10px;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            gap: 4px;
+            color: var(--gray-600);
+            transition: all 0.2s;
+            z-index: 2;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--blue-500);
+            color: var(--blue-500);
+        }
+
+        .copy-btn.show {
+            display: flex;
+        }
+
+        .copy-btn.copied {
+            background: var(--green-50);
+            border-color: var(--green-500);
+            color: var(--green-600);
+        }
+
+        /* Smart tooltip */
+        .smart-tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: help;
+        }
+
+        .smart-tooltip .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background: var(--gray-800);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .smart-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Skeleton loading */
+        .skeleton {
+            background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-200) 50%, var(--gray-100) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 6px;
+        }
+
+        /* Keyboard shortcut hints */
+        .kbd {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-family: 'SF Mono', monospace;
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            color: var(--gray-500);
+        }
+
+        /* Step transition overlay */
+        .step-transition {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 12px;
+        }
+
+        .step-transition.show {
+            display: flex;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        /* Preview markdown rendering */
+        .preview-markdown {
+            padding: 16px;
+            line-height: 1.8;
+        }
+
+        .preview-markdown h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .preview-markdown h2 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin: 16px 0 8px;
+        }
+
+        .preview-markdown p {
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+
+        .preview-markdown strong {
+            color: var(--gray-800);
+        }
+
+        .preview-markdown hr {
+            border: none;
+            border-top: 1px solid var(--gray-200);
+            margin: 12px 0;
+        }
+
+        .preview-markdown em {
+            color: var(--gray-500);
+            font-size: 12px;
+        }
+
+        /* Enhanced form panel */
+        .form-panel {
+            position: relative;
+        }
+
+        /* Smart highlight on focus */
+        .form-group:focus-within .form-label {
+            color: var(--blue-500);
+        }
+
+        /* Animated checkmark */
+        .checkmark-circle {
+            display: inline-flex;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--green-500);
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .checkmark-circle svg {
+            width: 10px;
+            height: 10px;
+            color: white;
+        }
+
+        /* Top bar enhancements */
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .keyboard-hint {
+            font-size: 12px;
+            color: var(--gray-400);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Success celebration */
+        .celebration {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .celebration-emoji {
+            font-size: 48px;
+            animation: bounceIn 0.6s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <div class="top-bar">
+        <div class="top-bar-logo">
+            <div class="logo-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </div>
+            <span class="logo-text">供给治理PRD文档生成工作台</span>
+        </div>
+        <div class="top-bar-right">
+            <div class="autosave-indicator" id="autosaveIndicator">
+                <div class="autosave-dot"></div>
+                <span id="autosaveText">自动保存</span>
+            </div>
+            <div class="keyboard-hint">
+                <span class="kbd">Ctrl</span>+<span class="kbd">↵</span> 下一步
+            </div>
+            <button class="top-bar-btn" onclick="clearForm()">清空表单</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>供给治理PRD文档生成工作台</h1>
+            <p>请输入需求关键信息，自动生成复合规范的PRD文档。如有疑问：产品功能相关咨询【紫凌】、技术实现相关咨询【时昼】。详细信息参考<a href="https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2KnvL4kFB6oMod7JB5r9YAn" target="_blank">「供给治理提需SOP」</a></p>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Left: Form Panel -->
+            <div class="form-panel">
+                <div class="form-panel-header">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    <span class="form-panel-title">需求关键信息输入</span>
+                </div>
+                <div class="form-panel-body">
+                    <!-- Step 1 -->
+                    <div class="step-panel active" id="step1">
+                        <div class="step-progress-bar">
+                            <div class="step-hint">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                                <span>请按照步骤顺序填写，完成当前步骤后进入下一步</span>
+                            </div>
+                            <div class="step-cards">
+                                <div class="step-card active" data-step="1" onclick="goToStep(1)">
+                                    <div class="step-card-header">
+                                        <div class="step-card-num">1</div>
+                                        <div class="step-card-title">基础信息</div>
+                                    </div>
+                                    <div class="step-card-fields">5 个必填项</div>
+                                    <div class="step-card-footer">
+                                        <div class="step-card-percent">完成度: <span id="step1Percent">0%</span></div>
+                                        <div class="step-card-badge" id="step1Status">进行中</div>
+                                    </div>
+                                    <div class="step-card-progress">
+                                        <div class="step-card-progress-fill" id="step1Bar"></div>
+                                    </div>
+                                </div>
+                                <div class="step-card disabled" data-step="2" onclick="goToStep(2)">
+                                    <div class="step-card-header">
+                                        <div class="step-card-num">2</div>
+                                        <div class="step-card-title">策略描述</div>
+                                    </div>
+                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-footer">
+                                        <div class="step-card-percent">完成度: <span id="step2Percent">0%</span></div>
+                                        <div class="step-card-badge" id="step2Status">待填写</div>
+                                    </div>
+                                    <div class="step-card-progress">
+                                        <div class="step-card-progress-fill" id="step2Bar"></div>
+                                    </div>
+                                </div>
+                                <div class="step-card disabled" data-step="3" onclick="goToStep(3)">
+                                    <div class="step-card-header">
+                                        <div class="step-card-num">3</div>
+                                        <div class="step-card-title">发布计划</div>
+                                    </div>
+                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-footer">
+                                        <div class="step-card-percent">完成度: <span id="step3Percent">0%</span></div>
+                                        <div class="step-card-badge" id="step3Status">待填写</div>
+                                    </div>
+                                    <div class="step-card-progress">
+                                        <div class="step-card-progress-fill" id="step3Bar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                业务归属人
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="docId" placeholder="请输入业务归属人姓名" autocomplete="off">
+                            <div class="error-message" id="docIdError">
+                                <span>⚠</span>
+                                <span>业务归属人为必填项</span>
+                            </div>
+                            <div class="success-message" id="docIdSuccess">
+                                <span>✓</span>
+                                <span>已填写</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="position: relative;">
+                            <label class="form-label">
+                                需求背景
+                                <span class="required">*</span>
+                                <span class="smart-tooltip">
+                                    <span class="tooltip-text">描述需求的背景和目的</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gray-400);margin-left:4px"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
+                            </label>
+                            <textarea class="form-textarea auto-grow" id="docDesc" placeholder="请描述需求的背景和目的" oninput="autoGrow(this)"></textarea>
+                            <div class="char-counter" id="descCounter">0 字符</div>
+                            <div class="error-message" id="docDescError">
+                                <span>⚠</span>
+                                <span>需求背景为必填项</span>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-secondary" onclick="clearForm()">清空</button>
+                            <button class="btn btn-primary" onclick="nextStep(1)">
+                                <span>下一步</span>
+                                <span>→</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step-panel" id="step2">
+                        <div class="step-progress-bar">
+                            <div class="step-hint">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                                <span>请按照步骤顺序填写，完成当前步骤后进入下一步</span>
+                            </div>
+                            <div class="step-cards">
+                                <div class="step-card completed" data-step="1" onclick="goToStep(1)">
+                                    <div class="step-card-header">
+                                        <div class="step-card-num">✓</div>
+                                        <div class="step-card-title">基础信息</div>
+                                    </div>
+                                    <div class="step-card-fields">5 个必填项</div>
+                                    <div class="step-card-footer">
+                                        <div class="step-card-percent">完成度: <span id="step1Percent">100%</span></div>
+                                        <div class="step-card-badge" id="step1Status">已完成</div>
+                                    </div>
+                                </div>
+                                <div class="step-card active" data-step="2" onclick="goToStep(2)">
+                                    <div class="step-card-header">
+                                        <div class="step-card-num">2</div>
+                                        <div class="step-card-title">策略描述</div>
+                                    </div>
+                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-footer">
+                                        <div class="step-card-percent">完成度: <span id="step2Percent">0%</span></div>
+                                        <div class="step-card-badge" id="step2Status">进行中</div>
+                                    </div>
+                                </div>
+                                <div class="step-card disabled" data-step="3" onclick="goToStep(3)">
+                                    <div class="step-card-header">
+                                        <div class="step-card-num">3</div>
+                                        <div class="step-card-title">发布计划</div>
+                                    </div>
+                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-footer">
+                                        <div class="step-card-percent">完成度: <span id="step3Percent">0%</span></div>
+                                        <div class="step-card-badge" id="step3Status">待填写</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="position: relative;">
+                            <label class="form-label">
+                                策略描述
+                                <span class="required">*</span>
+                            </label>
+                            <textarea class="form-textarea" id="docContent" placeholder="请输入策略描述内容" style="min-height: 160px;"></textarea>
+                            <div class="char-counter" id="contentCounter">0 字符</div>
+                            <div class="error-message" id="docContentError">
+                                <span>⚠</span>
+                                <span>策略描述为必填项</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                文档格式
+                                <span class="required">*</span>
+                            </label>
+                            <div class="format-options">
+                                <div class="format-option selected" data-format="markdown" onclick="selectFormat(this)">
+                                    <div class="format-icon">📄</div>
+                                    <div class="format-name">Markdown</div>
+                                    <div class="format-ext">.md</div>
+                                </div>
+                                <div class="format-option" data-format="text" onclick="selectFormat(this)">
+                                    <div class="format-icon">📃</div>
+                                    <div class="format-name">纯文本</div>
+                                    <div class="format-ext">.txt</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-secondary" onclick="prevStep(2)">← 上一步</button>
+                            <button class="btn btn-primary" id="generateBtn" onclick="nextStep(2)">
+                                <span>下一步</span>
+                                <span>→</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step-panel" id="step3">
+                        <div class="step-progress-bar">
+                            <div class="step-hint">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                                <span>请按照步骤顺序填写，完成当前步骤后进入下一步</span>
+                            </div>
+                            <div class="step-cards">
+                                <div class="step-card completed" data-step="1" onclick="goToStep(1)">
+                                    <div class="step-card-header">
+                                        <div class="step-card-num">✓</div>
+                                        <div class="step-card-title">基础信息</div>
+                                    </div>
+                                    <div class="step-card-fields">5 个必填项</div>
+                                    <div class="step-card-footer">
+                                        <div class="step-card-percent">完成度: 100%</div>
+                                        <div class="step-card-badge">已完成</div>
+                                    </div>
+                                </div>
+                                <div class="step-card completed" data-step="2" onclick="goToStep(2)">
+                                    <div class="step-card-header">
+                                        <div class="step-card-num">✓</div>
+                                        <div class="step-card-title">策略描述</div>
+                                    </div>
+                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-footer">
+                                        <div class="step-card-percent">完成度: 100%</div>
+                                        <div class="step-card-badge">已完成</div>
+                                    </div>
+                                </div>
+                                <div class="step-card active" data-step="3" onclick="goToStep(3)">
+                                    <div class="step-card-header">
+                                        <div class="step-card-num">3</div>
+                                        <div class="step-card-title">发布计划</div>
+                                    </div>
+                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-footer">
+                                        <div class="step-card-percent">完成度: <span id="step3Percent">0%</span></div>
+                                        <div class="step-card-badge" id="step3Status">进行中</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="download-area">
+                            <div class="download-icon">🎉</div>
+                            <div class="download-title">文档生成成功！</div>
+                            <div class="download-text">您可以预览或下载生成的文档</div>
+                        </div>
+
+                        <div class="file-list" id="fileList"></div>
+
+                        <div class="button-group">
+                            <button class="btn btn-secondary" onclick="prevStep(3)">← 上一步</button>
+                            <button class="btn btn-success" onclick="downloadAll()">📥 下载全部</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Preview Panel -->
+            <div class="preview-panel">
+                <div class="preview-panel-header">
+                    <div class="preview-panel-title">
+                        <div class="preview-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </div>
+                        PRD文档预览
+                    </div>
+                    <div class="preview-tabs">
+                        <div class="preview-tab active" onclick="switchPreviewTab('preview', this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            预览模式
+                        </div>
+                        <div class="preview-tab" onclick="switchPreviewTab('source', this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            源码模式
+                        </div>
+                    </div>
+                </div>
+                <div class="preview-panel-body">
+                    <div class="preview-empty" id="previewEmpty">
+                        <div class="preview-empty-icon">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                        <div class="preview-empty-title">暂无PRD文档</div>
+                        <div class="preview-empty-desc">请在左侧填写项目信息并点击生成</div>
+                    </div>
+                    <div class="preview-generated" id="previewGenerated">
+                        <button class="copy-btn show" id="copyBtn" onclick="copyPreview()">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            复制
+                        </button>
+                        <div class="preview-generated-content" id="previewGeneratedContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- FAB -->
+    <button class="fab" id="fab" onclick="handleFab()" title="快速操作" style="display:none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span class="toast-icon"></span>
+        <span class="toast-message"></span>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">正在生成文档...</div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedFormat = 'markdown';
+        let generatedFiles = [];
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = toast.querySelector('.toast-icon');
+            const msg = toast.querySelector('.toast-message');
+            toast.className = 'toast ' + type;
+            icon.textContent = type === 'success' ? '✓' : '✕';
+            msg.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function showLoading(show = true) {
+            document.getElementById('loadingOverlay').classList.toggle('show', show);
+        }
+
+        function updateCharCounter(textareaId, counterId, minLength) {
+            const textarea = document.getElementById(textareaId);
+            const counter = document.getElementById(counterId);
+            const length = textarea.value.length;
+            counter.textContent = length + ' 字符';
+            counter.className = 'char-counter';
+            if (minLength > 0) {
+                if (length === 0) counter.classList.add('error');
+                else if (length < minLength) counter.classList.add('warning');
+                else counter.classList.add('valid');
+            }
+        }
+
+        function validateField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const error = document.getElementById(fieldId + 'Error');
+            const success = document.getElementById(fieldId + 'Success');
+            let isValid = true;
+
+            if (error) error.classList.remove('show');
+            if (success) success.classList.remove('show');
+            field.classList.remove('error', 'valid');
+
+            if (fieldId === 'docId') {
+                isValid = field.value.trim().length > 0;
+                if (!isValid && error) {
+                    error.querySelector('span:last-child').textContent = '业务归属人为必填项';
+                    error.classList.add('show');
+                }
+            } else if (fieldId === 'docDesc') {
+                isValid = field.value.trim().length > 0;
+                if (!isValid && error) {
+                    error.querySelector('span:last-child').textContent = '需求背景为必填项';
+                    error.classList.add('show');
+                } else if (isValid && success) {
+                    success.classList.add('show');
+                }
+            } else if (fieldId === 'docContent') {
+                isValid = field.value.trim().length > 0;
+                if (!isValid && error) {
+                    error.querySelector('span:last-child').textContent = '策略描述为必填项';
+                    error.classList.add('show');
+                }
+            }
+
+            if (isValid) field.classList.add('valid');
+            else field.classList.add('error');
+
+            return isValid;
+        }
+
+        function validateStep1() {
+            return validateField('docId') && validateField('docDesc');
+        }
+
+        function updatePreview() {
+            // Preview is shown after generation
+        }
+
+        function switchPreviewTab(mode, el) {
+            document.querySelectorAll('.preview-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function showPreview(content) {
+            document.getElementById('previewEmpty').style.display = 'none';
+            const gen = document.getElementById('previewGenerated');
+            gen.classList.add('show');
+            document.getElementById('previewGeneratedContent').textContent = content;
+            
+            // Show copy button
+            document.getElementById('copyBtn').classList.add('show');
+            
+            // Show FAB
+            document.getElementById('fab').style.display = 'flex';
+        }
+
+        function hidePreview() {
+            document.getElementById('previewEmpty').style.display = 'flex';
+            document.getElementById('previewGenerated').classList.remove('show');
+            document.getElementById('copyBtn').classList.remove('show');
+            document.getElementById('fab').style.display = 'none';
+        }
+
+        function selectFormat(el) {
+            document.querySelectorAll('.format-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedFormat = el.dataset.format;
+        }
+
+        function goToStep(step) {
+            if (step > currentStep) return;
+            document.getElementById('step' + currentStep).classList.remove('active');
+            currentStep = step;
+            document.getElementById('step' + currentStep).classList.add('active');
+            updateWorkflowSteps();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextStep(step) {
+            if (step === 1 && !validateStep1()) {
+                showToast('请检查必填项', 'error');
+                return;
+            }
+
+            if (step === 2) {
+                showLoading(true);
+                setTimeout(() => {
+                    generateDocuments();
+                    showLoading(false);
+                    showToast('文档生成成功！');
+                    launchConfetti();
+                    transitionToStep(3);
+                }, 1200);
+                return;
+            }
+
+            transitionToStep(step + 1);
+        }
+
+        function prevStep(step) {
+            document.getElementById('step' + step).classList.remove('active');
+            currentStep = step - 1;
+            document.getElementById('step' + currentStep).classList.add('active');
+            updateWorkflowSteps();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function transitionToStep(newStep) {
+            document.getElementById('step' + currentStep).classList.remove('active');
+            currentStep = newStep;
+            document.getElementById('step' + currentStep).classList.add('active');
+            updateWorkflowSteps();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateWorkflowSteps() {
+            // Update all step cards across all panels
+            document.querySelectorAll('.step-card').forEach(card => {
+                const stepNum = parseInt(card.dataset.step);
+                card.classList.remove('active', 'completed', 'disabled');
+
+                if (stepNum === currentStep) {
+                    card.classList.add('active');
+                    card.querySelector('.step-card-num').textContent = stepNum;
+                } else if (stepNum < currentStep) {
+                    card.classList.add('completed');
+                    card.querySelector('.step-card-num').textContent = '✓';
+                } else {
+                    card.classList.add('disabled');
+                    card.querySelector('.step-card-num').textContent = stepNum;
+                }
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('docId').value = '';
+            document.getElementById('docDesc').value = '';
+            document.getElementById('docContent').value = '';
+
+            document.querySelectorAll('.form-input, .form-textarea').forEach(el => {
+                el.classList.remove('error', 'valid');
+            });
+            document.querySelectorAll('.error-message, .success-message').forEach(el => {
+                el.classList.remove('show');
+            });
+
+            currentStep = 1;
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('step1').classList.add('active');
+            updateWorkflowSteps();
+            hidePreview();
+            showToast('表单已清空');
+        }
+
+        function generateDocuments() {
+            const docId = document.getElementById('docId').value.trim();
+            const docDesc = document.getElementById('docDesc').value.trim();
+            const docContent = document.getElementById('docContent').value.trim();
+
+            let fileContent = '';
+            let fileExt = selectedFormat === 'markdown' ? '.md' : '.txt';
+
+            if (selectedFormat === 'markdown') {
+                fileContent = `# PRD文档\n\n`;
+                fileContent += `**业务归属人**: ${docId}\n\n`;
+                fileContent += `---\n\n`;
+                fileContent += `## 需求背景\n\n${docDesc}\n\n`;
+                if (docContent) {
+                    fileContent += `## 策略描述\n\n${docContent}\n\n`;
+                }
+                fileContent += `---\n*Generated by 供给治理PRD文档生成工作台 | ${new Date().toLocaleString('zh-CN')}*\n`;
+            } else {
+                fileContent = `PRD文档\n${'═'.repeat(40)}\n\n`;
+                fileContent += `业务归属人: ${docId}\n`;
+                fileContent += `生成时间: ${new Date().toLocaleString('zh-CN')}\n\n`;
+                fileContent += `${'─'.repeat(40)}\n\n`;
+                fileContent += `需求背景:\n${docDesc}\n\n`;
+                if (docContent) {
+                    fileContent += `${'─'.repeat(40)}\n\n`;
+                    fileContent += `策略描述:\n${docContent}\n\n`;
+                }
+                fileContent += `${'═'.repeat(40)}\n`;
+            }
+
+            const fileName = `PRD_${docId}${fileExt}`;
+            generatedFiles = [{
+                name: fileName,
+                content: fileContent,
+                format: selectedFormat,
+                size: new Blob([fileContent]).size
+            }];
+
+            showPreview(fileContent);
+            displayGeneratedFiles();
+        }
+
+        function displayGeneratedFiles() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            generatedFiles.forEach((file, index) => {
+                const item = document.createElement('div');
+                item.className = 'file-item';
+                item.innerHTML = `
+                    <div class="file-icon">${file.format === 'markdown' ? '📄' : '📃'}</div>
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-meta">
+                            <span>${formatFileSize(file.size)}</span>
+                            <span>${file.format.toUpperCase()}</span>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="file-btn file-btn-preview" onclick="previewFile(${index})">预览</button>
+                        <button class="file-btn file-btn-download" onclick="downloadFile(${index})">下载</button>
+                    </div>
+                `;
+                fileList.appendChild(item);
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
+        function previewFile(index) {
+            const file = generatedFiles[index];
+            const w = window.open('', '_blank');
+            w.document.write(`<html><head><title>${file.name}</title><style>body{font-family:monospace;background:#111827;color:#e5e7eb;padding:40px;line-height:1.8}pre{white-space:pre-wrap}</style></head><body><pre>${escapeHtml(file.content)}</pre></body></html>`);
+        }
+
+        function downloadFile(index) {
+            const file = generatedFiles[index];
+            const blob = new Blob([file.content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('下载已开始');
+        }
+
+        function downloadAll() {
+            generatedFiles.forEach((f, i) => setTimeout(() => downloadFile(i), i * 500));
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Event listeners
+        document.getElementById('docId').addEventListener('input', function() {
+            validateField('docId');
+        });
+
+        document.getElementById('docDesc').addEventListener('input', function() {
+            validateField('docDesc');
+            updateCharCounter('docDesc', 'descCounter', 1);
+        });
+
+        document.getElementById('docContent').addEventListener('input', function() {
+            updateCharCounter('docContent', 'contentCounter', 0);
+        });
+
+        // Init
+        updateCharCounter('docDesc', 'descCounter', 1);
+
+        // ====== Smart Features ======
+
+        // Auto-grow textarea
+        function autoGrow(el) {
+            el.style.height = 'auto';
+            el.style.height = Math.max(100, el.scrollHeight) + 'px';
+        }
+
+        // Auto-save with debounce
+        let saveTimer;
+        function autoSave() {
+            const indicator = document.getElementById('autosaveIndicator');
+            const text = document.getElementById('autosaveText');
+            indicator.className = 'autosave-indicator saving';
+            text.textContent = '保存中...';
+            
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(() => {
+                try {
+                    localStorage.setItem('prd-form-data', JSON.stringify({
+                        docId: document.getElementById('docId').value,
+                        docDesc: document.getElementById('docDesc').value,
+                        docContent: document.getElementById('docContent').value,
+                        selectedFormat: selectedFormat,
+                        currentStep: currentStep,
+                        timestamp: Date.now()
+                    }));
+                    indicator.className = 'autosave-indicator saved';
+                    text.textContent = '已保存';
+                    setTimeout(() => {
+                        indicator.className = 'autosave-indicator';
+                        text.textContent = '自动保存';
+                    }, 2000);
+                } catch(e) {
+                    indicator.className = 'autosave-indicator';
+                    text.textContent = '自动保存';
+                }
+            }, 800);
+        }
+
+        // Load saved data
+        function loadSavedData() {
+            try {
+                const data = JSON.parse(localStorage.getItem('prd-form-data'));
+                if (data && data.timestamp && Date.now() - data.timestamp < 3600000) {
+                    document.getElementById('docId').value = data.docId || '';
+                    document.getElementById('docDesc').value = data.docDesc || '';
+                    document.getElementById('docContent').value = data.docContent || '';
+                    if (data.selectedFormat) {
+                        selectedFormat = data.selectedFormat;
+                        document.querySelectorAll('.format-option').forEach(o => {
+                            o.classList.toggle('selected', o.dataset.format === selectedFormat);
+                        });
+                    }
+                }
+            } catch(e) {}
+        }
+
+        // Update step progress bars
+        function updateStepProgress() {
+            const step1Fields = [
+                document.getElementById('docId').value.trim().length > 0,
+                document.getElementById('docDesc').value.trim().length > 0
+            ];
+            const step1Count = step1Fields.filter(Boolean).length;
+            const step1Percent = Math.round((step1Count / 2) * 100);
+            
+            document.getElementById('step1Percent').textContent = step1Percent + '%';
+            document.getElementById('step1Bar').style.width = step1Percent + '%';
+            
+            if (currentStep === 1) {
+                document.getElementById('step1Status').textContent = step1Percent === 100 ? '已完成' : '进行中';
+            }
+            
+            const step2Filled = document.getElementById('docContent').value.trim().length > 0;
+            document.getElementById('step2Percent').textContent = step2Filled ? '100%' : '0%';
+            document.getElementById('step2Bar').style.width = step2Filled ? '100%' : '0%';
+        }
+
+        // Confetti animation
+        function launchConfetti() {
+            const container = document.getElementById('confettiContainer');
+            const colors = ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+            
+            for (let i = 0; i < 60; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+                confetti.style.width = (6 + Math.random() * 8) + 'px';
+                confetti.style.height = (6 + Math.random() * 8) + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                container.appendChild(confetti);
+            }
+            
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+
+        // Copy preview content
+        function copyPreview() {
+            const content = document.getElementById('previewGeneratedContent').textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.classList.add('copied');
+                btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已复制';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 复制';
+                }, 2000);
+            }).catch(() => {
+                showToast('复制失败', 'error');
+            });
+        }
+
+        // FAB button handler
+        function handleFab() {
+            if (currentStep < 3) {
+                nextStep(currentStep);
+            }
+        }
+
+        // Show/hide FAB based on scroll
+        window.addEventListener('scroll', () => {
+            const fab = document.getElementById('fab');
+            fab.style.display = window.scrollY > 300 ? 'flex' : 'none';
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+Enter to go to next step
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                if (currentStep === 1) nextStep(1);
+                else if (currentStep === 2) nextStep(2);
+            }
+        });
+
+        // Add auto-save listeners
+        document.getElementById('docId').addEventListener('input', function() {
+            validateField('docId');
+            updateStepProgress();
+            autoSave();
+        });
+
+        document.getElementById('docDesc').addEventListener('input', function() {
+            validateField('docDesc');
+            updateCharCounter('docDesc', 'descCounter', 1);
+            updateStepProgress();
+            autoSave();
+        });
+
+        document.getElementById('docContent').addEventListener('input', function() {
+            updateCharCounter('docContent', 'contentCounter', 0);
+            updateStepProgress();
+            autoSave();
+        });
+
+        // Load saved data on init
+        loadSavedData();
+    </script>
+</body>
+</html>
