@@ -570,7 +570,7 @@
         /* Format Options */
         .format-options {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
         }
 
@@ -1541,7 +1541,7 @@
                     <span class="form-panel-title">需求关键信息输入</span>
                 </div>
                 <div class="form-panel-body">
-                    <!-- Step 1 -->
+                    <!-- Step 1: 基础信息 -->
                     <div class="step-panel active" id="step1">
                         <div class="step-progress-bar">
                             <div class="step-hint">
@@ -1554,7 +1554,7 @@
                                         <div class="step-card-num">1</div>
                                         <div class="step-card-title">基础信息</div>
                                     </div>
-                                    <div class="step-card-fields">5 个必填项</div>
+                                    <div class="step-card-fields">4 个必填项</div>
                                     <div class="step-card-footer">
                                         <div class="step-card-percent">完成度: <span id="step1Percent">0%</span></div>
                                         <div class="step-card-badge" id="step1Status">进行中</div>
@@ -1568,7 +1568,7 @@
                                         <div class="step-card-num">2</div>
                                         <div class="step-card-title">策略描述</div>
                                     </div>
-                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-fields">2 个必填项</div>
                                     <div class="step-card-footer">
                                         <div class="step-card-percent">完成度: <span id="step2Percent">0%</span></div>
                                         <div class="step-card-badge" id="step2Status">待填写</div>
@@ -1582,7 +1582,7 @@
                                         <div class="step-card-num">3</div>
                                         <div class="step-card-title">发布计划</div>
                                     </div>
-                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-fields">2 个必填项</div>
                                     <div class="step-card-footer">
                                         <div class="step-card-percent">完成度: <span id="step3Percent">0%</span></div>
                                         <div class="step-card-badge" id="step3Status">待填写</div>
@@ -1594,36 +1594,78 @@
                             </div>
                         </div>
 
+                        <!-- 文档ID -->
                         <div class="form-group">
                             <label class="form-label">
-                                业务归属人
+                                文档ID
                                 <span class="required">*</span>
+                                <span class="smart-tooltip">
+                                    <span class="tooltip-text">根据文档类型自动匹配格式</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted);margin-left:4px"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
                             </label>
-                            <input type="text" class="form-input" id="docId" placeholder="请输入业务归属人姓名" autocomplete="off">
+                            <input type="text" class="form-input" id="docId" placeholder="如：供应链-D001、零PDD-001、1PDD-001、2PDD-001" autocomplete="off">
+                            <div class="form-hint">供应链文档：供应链-D{序号} | 零PDD：零PDD-{序号} | 一PDD：1PDD-{序号} | 二PDD：2PDD-{序号}</div>
                             <div class="error-message" id="docIdError">
                                 <span>⚠</span>
-                                <span>业务归属人为必填项</span>
+                                <span>文档ID为必填项，需符合对应格式</span>
                             </div>
                             <div class="success-message" id="docIdSuccess">
+                                <span>✓</span>
+                                <span>格式正确</span>
+                            </div>
+                        </div>
+
+                        <!-- 文档名称 -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                文档名称
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="docName" placeholder="请输入文档名称（1-100个字符）" autocomplete="off">
+                            <div class="error-message" id="docNameError">
+                                <span>⚠</span>
+                                <span>文档名称为必填项（1-100个字符）</span>
+                            </div>
+                            <div class="success-message" id="docNameSuccess">
                                 <span>✓</span>
                                 <span>已填写</span>
                             </div>
                         </div>
 
+                        <!-- 文档类型 -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                文档类型
+                                <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="docType">
+                                <option value="">请选择文档类型</option>
+                                <option value="零PDD">零PDD</option>
+                                <option value="一PDD">一PDD</option>
+                                <option value="二PDD">二PDD</option>
+                            </select>
+                            <div class="error-message" id="docTypeError">
+                                <span>⚠</span>
+                                <span>文档类型为必填项</span>
+                            </div>
+                        </div>
+
+                        <!-- 文档描述 -->
                         <div class="form-group" style="position: relative;">
                             <label class="form-label">
-                                需求背景
+                                文档描述
                                 <span class="required">*</span>
                                 <span class="smart-tooltip">
-                                    <span class="tooltip-text">描述需求的背景和目的</span>
+                                    <span class="tooltip-text">描述文档的主要用途和范围</span>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted);margin-left:4px"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                                 </span>
                             </label>
-                            <textarea class="form-textarea auto-grow" id="docDesc" placeholder="请描述需求的背景和目的" oninput="autoGrow(this)"></textarea>
+                            <textarea class="form-textarea auto-grow" id="docDesc" placeholder="请描述文档的主要用途和范围（至少10个字符）" oninput="autoGrow(this)"></textarea>
                             <div class="char-counter" id="descCounter">0 字符</div>
                             <div class="error-message" id="docDescError">
                                 <span>⚠</span>
-                                <span>需求背景为必填项</span>
+                                <span>文档描述至少需要10个字符</span>
                             </div>
                         </div>
 
@@ -1636,7 +1678,7 @@
                         </div>
                     </div>
 
-                    <!-- Step 2 -->
+                    <!-- Step 2: 策略描述 -->
                     <div class="step-panel" id="step2">
                         <div class="step-progress-bar">
                             <div class="step-hint">
@@ -1649,10 +1691,10 @@
                                         <div class="step-card-num">✓</div>
                                         <div class="step-card-title">基础信息</div>
                                     </div>
-                                    <div class="step-card-fields">5 个必填项</div>
+                                    <div class="step-card-fields">4 个必填项</div>
                                     <div class="step-card-footer">
-                                        <div class="step-card-percent">完成度: <span id="step1Percent">100%</span></div>
-                                        <div class="step-card-badge" id="step1Status">已完成</div>
+                                        <div class="step-card-percent">完成度: 100%</div>
+                                        <div class="step-card-badge">已完成</div>
                                     </div>
                                 </div>
                                 <div class="step-card active" data-step="2" onclick="goToStep(2)">
@@ -1660,7 +1702,7 @@
                                         <div class="step-card-num">2</div>
                                         <div class="step-card-title">策略描述</div>
                                     </div>
-                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-fields">2 个必填项</div>
                                     <div class="step-card-footer">
                                         <div class="step-card-percent">完成度: <span id="step2Percent">0%</span></div>
                                         <div class="step-card-badge" id="step2Status">进行中</div>
@@ -1671,7 +1713,7 @@
                                         <div class="step-card-num">3</div>
                                         <div class="step-card-title">发布计划</div>
                                     </div>
-                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-fields">2 个必填项</div>
                                     <div class="step-card-footer">
                                         <div class="step-card-percent">完成度: <span id="step3Percent">0%</span></div>
                                         <div class="step-card-badge" id="step3Status">待填写</div>
@@ -1680,34 +1722,36 @@
                             </div>
                         </div>
 
+                        <!-- 文档内容 -->
                         <div class="form-group" style="position: relative;">
                             <label class="form-label">
-                                策略描述
-                                <span class="required">*</span>
+                                文档内容
                             </label>
-                            <textarea class="form-textarea" id="docContent" placeholder="请输入策略描述内容" style="min-height: 160px;"></textarea>
+                            <textarea class="form-textarea" id="docContent" placeholder="请输入PDD文档的具体内容（可选）" style="min-height: 160px;"></textarea>
                             <div class="char-counter" id="contentCounter">0 字符</div>
-                            <div class="error-message" id="docContentError">
-                                <span>⚠</span>
-                                <span>策略描述为必填项</span>
-                            </div>
                         </div>
 
+                        <!-- 文档格式 -->
                         <div class="form-group">
                             <label class="form-label">
-                                文档格式
+                                输出格式
                                 <span class="required">*</span>
                             </label>
                             <div class="format-options">
                                 <div class="format-option selected" data-format="markdown" onclick="selectFormat(this)">
                                     <div class="format-icon">📄</div>
                                     <div class="format-name">Markdown</div>
-                                    <div class="format-ext">.md</div>
+                                    <div class="format-ext">.md（默认）</div>
                                 </div>
                                 <div class="format-option" data-format="text" onclick="selectFormat(this)">
                                     <div class="format-icon">📃</div>
                                     <div class="format-name">纯文本</div>
                                     <div class="format-ext">.txt</div>
+                                </div>
+                                <div class="format-option" data-format="html" onclick="selectFormat(this)">
+                                    <div class="format-icon">🌐</div>
+                                    <div class="format-name">HTML</div>
+                                    <div class="format-ext">.html</div>
                                 </div>
                             </div>
                         </div>
@@ -1721,7 +1765,7 @@
                         </div>
                     </div>
 
-                    <!-- Step 3 -->
+                    <!-- Step 3: 发布计划 -->
                     <div class="step-panel" id="step3">
                         <div class="step-progress-bar">
                             <div class="step-hint">
@@ -1734,7 +1778,7 @@
                                         <div class="step-card-num">✓</div>
                                         <div class="step-card-title">基础信息</div>
                                     </div>
-                                    <div class="step-card-fields">5 个必填项</div>
+                                    <div class="step-card-fields">4 个必填项</div>
                                     <div class="step-card-footer">
                                         <div class="step-card-percent">完成度: 100%</div>
                                         <div class="step-card-badge">已完成</div>
@@ -1745,7 +1789,7 @@
                                         <div class="step-card-num">✓</div>
                                         <div class="step-card-title">策略描述</div>
                                     </div>
-                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-fields">2 个必填项</div>
                                     <div class="step-card-footer">
                                         <div class="step-card-percent">完成度: 100%</div>
                                         <div class="step-card-badge">已完成</div>
@@ -1756,7 +1800,7 @@
                                         <div class="step-card-num">3</div>
                                         <div class="step-card-title">发布计划</div>
                                     </div>
-                                    <div class="step-card-fields">1 个必填项</div>
+                                    <div class="step-card-fields">2 个必填项</div>
                                     <div class="step-card-footer">
                                         <div class="step-card-percent">完成度: <span id="step3Percent">0%</span></div>
                                         <div class="step-card-badge" id="step3Status">进行中</div>
@@ -1765,7 +1809,29 @@
                             </div>
                         </div>
 
-                        <div class="download-area">
+                        <!-- 灰度计划 -->
+                        <div class="form-group" style="position: relative;">
+                            <label class="form-label">
+                                灰度计划
+                            </label>
+                            <textarea class="form-textarea auto-grow" id="grayScale" placeholder="预期的灰度计划，如不需要可填写无" oninput="autoGrow(this)"></textarea>
+                            <div class="form-hint">非必填项，描述预期的灰度计划</div>
+                        </div>
+
+                        <!-- 预计上线时间 -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                预计上线时间
+                                <span class="required">*</span>
+                            </label>
+                            <input type="date" class="form-input" id="launchDate">
+                            <div class="error-message" id="launchDateError">
+                                <span>⚠</span>
+                                <span>预计上线时间为必填项</span>
+                            </div>
+                        </div>
+
+                        <div class="download-area" id="downloadArea" style="display:none;">
                             <div class="download-icon">🎉</div>
                             <div class="download-title">文档生成成功！</div>
                             <div class="download-text">您可以预览或下载生成的文档</div>
@@ -1775,7 +1841,7 @@
 
                         <div class="button-group">
                             <button class="btn btn-secondary" onclick="prevStep(3)">← 上一步</button>
-                            <button class="btn btn-success" onclick="downloadAll()">📥 下载全部</button>
+                            <button class="btn btn-success" id="generateFinalBtn" onclick="generateFinal()">📥 生成并下载</button>
                         </div>
                     </div>
                 </div>
@@ -1809,7 +1875,7 @@
                             <div class="line"></div>
                         </div>
                         <div class="preview-empty-title">暂无PRD文档</div>
-                        <div class="preview-empty-desc">请在左侧填写项目信息并点击生成</div>
+                        <div class="preview-empty-desc">请在左侧填写信息并点击生成</div>
                     </div>
                     <div class="preview-generated" id="previewGenerated">
                         <button class="copy-btn show" id="copyBtn" onclick="copyPreview()">
@@ -1878,6 +1944,14 @@
             }
         }
 
+        // ID格式验证正则
+        const idPatterns = {
+            '供应链': /^供应链-D\d{3}$/,
+            '零PDD': /^零PDD-\d{3}$/,
+            '一PDD': /^1PDD-\d{3}$/,
+            '二PDD': /^2PDD-\d{3}$/
+        };
+
         function validateField(fieldId) {
             const field = document.getElementById(fieldId);
             const error = document.getElementById(fieldId + 'Error');
@@ -1890,22 +1964,46 @@
 
             if (fieldId === 'docId') {
                 isValid = field.value.trim().length > 0;
-                if (!isValid && error) {
-                    error.querySelector('span:last-child').textContent = '业务归属人为必填项';
-                    error.classList.add('show');
-                }
-            } else if (fieldId === 'docDesc') {
-                isValid = field.value.trim().length > 0;
-                if (!isValid && error) {
-                    error.querySelector('span:last-child').textContent = '需求背景为必填项';
+                const docType = document.getElementById('docType').value;
+                if (isValid && docType && idPatterns[docType]) {
+                    isValid = idPatterns[docType].test(field.value.trim());
+                    if (!isValid && error) {
+                        error.querySelector('span:last-child').textContent = `文档ID格式不正确，应为 ${docType}-{序号} 格式`;
+                        error.classList.add('show');
+                    }
+                } else if (!isValid && error) {
+                    error.querySelector('span:last-child').textContent = '文档ID为必填项';
                     error.classList.add('show');
                 } else if (isValid && success) {
                     success.classList.add('show');
                 }
-            } else if (fieldId === 'docContent') {
-                isValid = field.value.trim().length > 0;
+            } else if (fieldId === 'docName') {
+                const len = field.value.trim().length;
+                isValid = len >= 1 && len <= 100;
                 if (!isValid && error) {
-                    error.querySelector('span:last-child').textContent = '策略描述为必填项';
+                    error.querySelector('span:last-child').textContent = '文档名称为必填项（1-100个字符）';
+                    error.classList.add('show');
+                } else if (isValid && success) {
+                    success.classList.add('show');
+                }
+            } else if (fieldId === 'docType') {
+                isValid = field.value.length > 0;
+                if (!isValid && error) {
+                    error.querySelector('span:last-child').textContent = '文档类型为必填项';
+                    error.classList.add('show');
+                }
+            } else if (fieldId === 'docDesc') {
+                isValid = field.value.trim().length >= 10;
+                if (!isValid && error) {
+                    error.querySelector('span:last-child').textContent = '文档描述至少需要10个字符';
+                    error.classList.add('show');
+                } else if (isValid && success) {
+                    success.classList.add('show');
+                }
+            } else if (fieldId === 'launchDate') {
+                isValid = field.value.length > 0;
+                if (!isValid && error) {
+                    error.querySelector('span:last-child').textContent = '预计上线时间为必填项';
                     error.classList.add('show');
                 }
             }
@@ -1917,7 +2015,11 @@
         }
 
         function validateStep1() {
-            return validateField('docId') && validateField('docDesc');
+            return validateField('docId') && validateField('docName') && validateField('docType') && validateField('docDesc');
+        }
+
+        function validateStep3() {
+            return validateField('launchDate');
         }
 
         function updatePreview() {
@@ -1971,14 +2073,7 @@
             }
 
             if (step === 2) {
-                showLoading(true);
-                setTimeout(() => {
-                    generateDocuments();
-                    showLoading(false);
-                    showToast('文档生成成功！');
-                    launchConfetti();
-                    transitionToStep(3);
-                }, 1200);
+                transitionToStep(3);
                 return;
             }
 
@@ -2022,10 +2117,14 @@
 
         function clearForm() {
             document.getElementById('docId').value = '';
+            document.getElementById('docName').value = '';
+            document.getElementById('docType').value = '';
             document.getElementById('docDesc').value = '';
             document.getElementById('docContent').value = '';
+            document.getElementById('grayScale').value = '';
+            document.getElementById('launchDate').value = '';
 
-            document.querySelectorAll('.form-input, .form-textarea').forEach(el => {
+            document.querySelectorAll('.form-input, .form-textarea, .form-select').forEach(el => {
                 el.classList.remove('error', 'valid');
             });
             document.querySelectorAll('.error-message, .success-message').forEach(el => {
@@ -2037,40 +2136,87 @@
             document.getElementById('step1').classList.add('active');
             updateWorkflowSteps();
             hidePreview();
+            document.getElementById('downloadArea').style.display = 'none';
+            document.getElementById('fileList').innerHTML = '';
             showToast('表单已清空');
+        }
+
+        function generateFinal() {
+            if (!validateStep3()) {
+                showToast('请检查必填项', 'error');
+                return;
+            }
+
+            showLoading(true);
+            setTimeout(() => {
+                generateDocuments();
+                showLoading(false);
+                showToast('文档生成成功！');
+                launchConfetti();
+                document.getElementById('downloadArea').style.display = 'block';
+                displayGeneratedFiles();
+            }, 1200);
         }
 
         function generateDocuments() {
             const docId = document.getElementById('docId').value.trim();
+            const docName = document.getElementById('docName').value.trim();
+            const docType = document.getElementById('docType').value;
             const docDesc = document.getElementById('docDesc').value.trim();
             const docContent = document.getElementById('docContent').value.trim();
+            const grayScale = document.getElementById('grayScale').value.trim();
+            const launchDate = document.getElementById('launchDate').value;
 
             let fileContent = '';
-            let fileExt = selectedFormat === 'markdown' ? '.md' : '.txt';
+            let fileExt = selectedFormat === 'markdown' ? '.md' : (selectedFormat === 'html' ? '.html' : '.txt');
 
             if (selectedFormat === 'markdown') {
-                fileContent = `# PRD文档\n\n`;
-                fileContent += `**业务归属人**: ${docId}\n\n`;
+                fileContent = `# ${docName || 'PRD文档'}\n\n`;
+                fileContent += `**文档ID**: ${docId}  \n`;
+                fileContent += `**文档类型**: ${docType}  \n`;
+                fileContent += `**生成时间**: ${new Date().toLocaleString('zh-CN')}  \n`;
+                fileContent += `**预计上线时间**: ${launchDate || '待定'}\n\n`;
                 fileContent += `---\n\n`;
-                fileContent += `## 需求背景\n\n${docDesc}\n\n`;
+                fileContent += `## 文档描述\n\n${docDesc}\n\n`;
                 if (docContent) {
-                    fileContent += `## 策略描述\n\n${docContent}\n\n`;
+                    fileContent += `---\n\n## 策略描述\n\n${docContent}\n\n`;
+                }
+                if (grayScale) {
+                    fileContent += `---\n\n## 灰度计划\n\n${grayScale}\n\n`;
                 }
                 fileContent += `---\n*Generated by 供给治理PRD文档生成工作台 | ${new Date().toLocaleString('zh-CN')}*\n`;
+            } else if (selectedFormat === 'html') {
+                fileContent = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>${docName || 'PRD文档'}</title>
+<style>body{font-family:sans-serif;max-width:800px;margin:40px auto;padding:20px;line-height:1.8}h1{border-bottom:2px solid #333;padding-bottom:10px}h2{margin-top:30px}table{border-collapse:collapse;width:100%;margin:20px 0}th,td{border:1px solid #ddd;padding:10px;text-align:left}th{background:#f5f5f5}</style>
+</head><body>
+<h1>${docName || 'PRD文档'}</h1>
+<table><tr><th>文档ID</th><td>${docId}</td></tr><tr><th>文档类型</th><td>${docType}</td></tr><tr><th>生成时间</th><td>${new Date().toLocaleString('zh-CN')}</td></tr><tr><th>预计上线时间</th><td>${launchDate || '待定'}</td></tr></table>
+<h2>文档描述</h2><p>${docDesc}</p>
+${docContent ? '<h2>策略描述</h2><p>' + docContent + '</p>' : ''}
+${grayScale ? '<h2>灰度计划</h2><p>' + grayScale + '</p>' : ''}
+<hr><p><em>Generated by 供给治理PRD文档生成工作台</em></p>
+</body></html>`;
             } else {
-                fileContent = `PRD文档\n${'═'.repeat(40)}\n\n`;
-                fileContent += `业务归属人: ${docId}\n`;
-                fileContent += `生成时间: ${new Date().toLocaleString('zh-CN')}\n\n`;
+                fileContent = `${docName || 'PRD文档'}\n${'═'.repeat(40)}\n\n`;
+                fileContent += `文档ID: ${docId}\n`;
+                fileContent += `文档类型: ${docType}\n`;
+                fileContent += `生成时间: ${new Date().toLocaleString('zh-CN')}\n`;
+                fileContent += `预计上线时间: ${launchDate || '待定'}\n\n`;
                 fileContent += `${'─'.repeat(40)}\n\n`;
-                fileContent += `需求背景:\n${docDesc}\n\n`;
+                fileContent += `文档描述:\n${docDesc}\n\n`;
                 if (docContent) {
                     fileContent += `${'─'.repeat(40)}\n\n`;
                     fileContent += `策略描述:\n${docContent}\n\n`;
                 }
+                if (grayScale) {
+                    fileContent += `${'─'.repeat(40)}\n\n`;
+                    fileContent += `灰度计划:\n${grayScale}\n\n`;
+                }
                 fileContent += `${'═'.repeat(40)}\n`;
             }
 
-            const fileName = `PRD_${docId}${fileExt}`;
+            const fileName = `${docId}_${docName || 'PRD'}${fileExt}`;
             generatedFiles = [{
                 name: fileName,
                 content: fileContent,
@@ -2079,7 +2225,6 @@
             }];
 
             showPreview(fileContent);
-            displayGeneratedFiles();
         }
 
         function displayGeneratedFiles() {
@@ -2089,7 +2234,7 @@
                 const item = document.createElement('div');
                 item.className = 'file-item';
                 item.innerHTML = `
-                    <div class="file-icon">${file.format === 'markdown' ? '📄' : '📃'}</div>
+                    <div class="file-icon">${file.format === 'markdown' ? '📄' : (file.format === 'html' ? '🌐' : '📃')}</div>
                     <div class="file-info">
                         <div class="file-name">${file.name}</div>
                         <div class="file-meta">
@@ -2115,12 +2260,18 @@
         function previewFile(index) {
             const file = generatedFiles[index];
             const w = window.open('', '_blank');
-            w.document.write(`<html><head><title>${file.name}</title><style>body{font-family:monospace;background:#0a0e1a;color:#e5e7eb;padding:40px;line-height:1.8}pre{white-space:pre-wrap}</style></head><body><pre>${escapeHtml(file.content)}</pre></body></html>`);
+            if (file.format === 'html') {
+                w.document.write(file.content);
+            } else {
+                w.document.write(`<html><head><title>${file.name}</title><style>body{font-family:monospace;background:#0a0e1a;color:#e5e7eb;padding:40px;line-height:1.8}pre{white-space:pre-wrap}</style></head><body><pre>${escapeHtml(file.content)}</pre></body></html>`);
+            }
+            w.document.close();
         }
 
         function downloadFile(index) {
             const file = generatedFiles[index];
-            const blob = new Blob([file.content], { type: 'text/plain;charset=utf-8' });
+            const mimeType = file.format === 'html' ? 'text/html;charset=utf-8' : 'text/plain;charset=utf-8';
+            const blob = new Blob([file.content], { type: mimeType });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -2132,10 +2283,6 @@
             showToast('下载已开始');
         }
 
-        function downloadAll() {
-            generatedFiles.forEach((f, i) => setTimeout(() => downloadFile(i), i * 500));
-        }
-
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
@@ -2145,19 +2292,46 @@
         // Event listeners
         document.getElementById('docId').addEventListener('input', function() {
             validateField('docId');
+            updateStepProgress();
+            autoSave();
+        });
+
+        document.getElementById('docName').addEventListener('input', function() {
+            validateField('docName');
+            updateStepProgress();
+            autoSave();
+        });
+
+        document.getElementById('docType').addEventListener('change', function() {
+            validateField('docType');
+            updateStepProgress();
+            autoSave();
         });
 
         document.getElementById('docDesc').addEventListener('input', function() {
             validateField('docDesc');
-            updateCharCounter('docDesc', 'descCounter', 1);
+            updateCharCounter('docDesc', 'descCounter', 10);
+            updateStepProgress();
+            autoSave();
         });
 
         document.getElementById('docContent').addEventListener('input', function() {
             updateCharCounter('docContent', 'contentCounter', 0);
+            autoSave();
+        });
+
+        document.getElementById('grayScale').addEventListener('input', function() {
+            autoSave();
+        });
+
+        document.getElementById('launchDate').addEventListener('change', function() {
+            validateField('launchDate');
+            updateStepProgress();
+            autoSave();
         });
 
         // Init
-        updateCharCounter('docDesc', 'descCounter', 1);
+        updateCharCounter('docDesc', 'descCounter', 10);
 
         // ====== Smart Features ======
 
@@ -2180,8 +2354,12 @@
                 try {
                     localStorage.setItem('prd-form-data', JSON.stringify({
                         docId: document.getElementById('docId').value,
+                        docName: document.getElementById('docName').value,
+                        docType: document.getElementById('docType').value,
                         docDesc: document.getElementById('docDesc').value,
                         docContent: document.getElementById('docContent').value,
+                        grayScale: document.getElementById('grayScale').value,
+                        launchDate: document.getElementById('launchDate').value,
                         selectedFormat: selectedFormat,
                         currentStep: currentStep,
                         timestamp: Date.now()
@@ -2205,8 +2383,12 @@
                 const data = JSON.parse(localStorage.getItem('prd-form-data'));
                 if (data && data.timestamp && Date.now() - data.timestamp < 3600000) {
                     document.getElementById('docId').value = data.docId || '';
+                    document.getElementById('docName').value = data.docName || '';
+                    document.getElementById('docType').value = data.docType || '';
                     document.getElementById('docDesc').value = data.docDesc || '';
                     document.getElementById('docContent').value = data.docContent || '';
+                    document.getElementById('grayScale').value = data.grayScale || '';
+                    document.getElementById('launchDate').value = data.launchDate || '';
                     if (data.selectedFormat) {
                         selectedFormat = data.selectedFormat;
                         document.querySelectorAll('.format-option').forEach(o => {
@@ -2219,12 +2401,15 @@
 
         // Update step progress bars
         function updateStepProgress() {
+            // Step 1: docId, docName, docType, docDesc
             const step1Fields = [
                 document.getElementById('docId').value.trim().length > 0,
-                document.getElementById('docDesc').value.trim().length > 0
+                document.getElementById('docName').value.trim().length > 0,
+                document.getElementById('docType').value.length > 0,
+                document.getElementById('docDesc').value.trim().length >= 10
             ];
             const step1Count = step1Fields.filter(Boolean).length;
-            const step1Percent = Math.round((step1Count / 2) * 100);
+            const step1Percent = Math.round((step1Count / 4) * 100);
             
             document.getElementById('step1Percent').textContent = step1Percent + '%';
             document.getElementById('step1Bar').style.width = step1Percent + '%';
@@ -2233,9 +2418,19 @@
                 document.getElementById('step1Status').textContent = step1Percent === 100 ? '已完成' : '进行中';
             }
             
-            const step2Filled = document.getElementById('docContent').value.trim().length > 0;
-            document.getElementById('step2Percent').textContent = step2Filled ? '100%' : '0%';
-            document.getElementById('step2Bar').style.width = step2Filled ? '100%' : '0%';
+            // Step 2: docContent (optional), format (required)
+            const step2Percent = 100; // Format is always selected
+            document.getElementById('step2Percent').textContent = step2Percent + '%';
+            document.getElementById('step2Bar').style.width = step2Percent + '%';
+            
+            // Step 3: grayScale (optional), launchDate (required)
+            const launchDateFilled = document.getElementById('launchDate').value.length > 0;
+            document.getElementById('step3Percent').textContent = launchDateFilled ? '100%' : '0%';
+            document.getElementById('step3Bar').style.width = launchDateFilled ? '100%' : '0%';
+            
+            if (currentStep === 3) {
+                document.getElementById('step3Status').textContent = launchDateFilled ? '已完成' : '进行中';
+            }
         }
 
         // Confetti animation
@@ -2297,6 +2492,7 @@
                 e.preventDefault();
                 if (currentStep === 1) nextStep(1);
                 else if (currentStep === 2) nextStep(2);
+                else if (currentStep === 3) generateFinal();
             }
         });
 
@@ -2321,26 +2517,6 @@
                 container.appendChild(particle);
             }
         }
-
-        // Add auto-save listeners
-        document.getElementById('docId').addEventListener('input', function() {
-            validateField('docId');
-            updateStepProgress();
-            autoSave();
-        });
-
-        document.getElementById('docDesc').addEventListener('input', function() {
-            validateField('docDesc');
-            updateCharCounter('docDesc', 'descCounter', 1);
-            updateStepProgress();
-            autoSave();
-        });
-
-        document.getElementById('docContent').addEventListener('input', function() {
-            updateCharCounter('docContent', 'contentCounter', 0);
-            updateStepProgress();
-            autoSave();
-        });
 
         // Load saved data on init
         loadSavedData();
