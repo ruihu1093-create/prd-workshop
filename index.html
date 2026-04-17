@@ -338,7 +338,7 @@
             position: relative;
         }
 
-        .step-card:hover:not(.disabled) {
+        .step-card:hover {
             border-color: var(--border-active);
             transform: translateY(-1px);
         }
@@ -1546,7 +1546,7 @@
                         <div class="step-progress-bar">
                             <div class="step-hint">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                                <span>请按照步骤顺序填写，完成当前步骤后进入下一步</span>
+                                <span>点击步骤卡片可自由切换，填写完成后点击生成按钮</span>
                             </div>
                             <div class="step-cards">
                                 <div class="step-card active" data-step="1" onclick="goToStep(1)">
@@ -1683,7 +1683,7 @@
                         <div class="step-progress-bar">
                             <div class="step-hint">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                                <span>请按照步骤顺序填写，完成当前步骤后进入下一步</span>
+                                <span>点击步骤卡片可自由切换，填写完成后点击生成按钮</span>
                             </div>
                             <div class="step-cards">
                                 <div class="step-card completed" data-step="1" onclick="goToStep(1)">
@@ -1770,7 +1770,7 @@
                         <div class="step-progress-bar">
                             <div class="step-hint">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                                <span>请按照步骤顺序填写，完成当前步骤后进入下一步</span>
+                                <span>点击步骤卡片可自由切换，填写完成后点击生成按钮</span>
                             </div>
                             <div class="step-cards">
                                 <div class="step-card completed" data-step="1" onclick="goToStep(1)">
@@ -2058,7 +2058,6 @@
         }
 
         function goToStep(step) {
-            if (step > currentStep) return;
             document.getElementById('step' + currentStep).classList.remove('active');
             currentStep = step;
             document.getElementById('step' + currentStep).classList.add('active');
@@ -2100,7 +2099,7 @@
             // Update all step cards across all panels
             document.querySelectorAll('.step-card').forEach(card => {
                 const stepNum = parseInt(card.dataset.step);
-                card.classList.remove('active', 'completed', 'disabled');
+                card.classList.remove('active', 'completed');
 
                 if (stepNum === currentStep) {
                     card.classList.add('active');
@@ -2109,7 +2108,6 @@
                     card.classList.add('completed');
                     card.querySelector('.step-card-num').textContent = '✓';
                 } else {
-                    card.classList.add('disabled');
                     card.querySelector('.step-card-num').textContent = stepNum;
                 }
             });
